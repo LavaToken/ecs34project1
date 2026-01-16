@@ -5,7 +5,7 @@ Student 1: Partner1 Name (123456789)
 Student 2: Partner2 Name (123456987)
 
 ## Project Status
-This the current status of the project ...
+This the current status of the project pending
 
 ## Known Issues
 The project fails to function properly in ...
@@ -15,7 +15,7 @@ The project fails to function properly in ...
 * [Some other link](https://stackoverflow.com)
 
 ## Generative AI Use
-I used ChatGPT for Prompt 1, and ZZZZZ for Prompt 2....
+I used ChatGPT to help me setup Docker. It took a very long time until I realized that the most recent version of Docker was not compatible with my MacOS, so I downloaded an older version for support.
 
 ### Prompt 1
 How do I iterate over all characters in a string in C++17?
