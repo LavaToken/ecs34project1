@@ -1,36 +1,60 @@
 #include <gtest/gtest.h>
 #include "StringUtils.h"
 
-TEST(StringUtilsTest, SliceTest){
-    
+TEST(StringUtilsTest, Slice){
+    EXPECT_EQ(StringUtils::Slice("",0,0),std::string(""));
+    EXPECT_EQ(StringUtils::Slice("quickbrownfox",0,5),std::string("quick"));
+    EXPECT_EQ(StringUtils::Slice("quickbrownfox",4, 12),std::string("kbrownfo"));
 }
 
 TEST(StringUtilsTest, Capitalize){
     EXPECT_EQ(StringUtils::Capitalize("hello"),std::string("Hello"));
-    EXPECT_EQ(StringUtils::Capitalize("HELLO"),std::string("HELLO"));
+    EXPECT_EQ(StringUtils::Capitalize("HELLO"),std::string("Hello"));
     EXPECT_EQ(StringUtils::Capitalize(" hello"),std::string(" hello"));
-    EXPECT_EQ(StringUtils::Capitalize("HELLO WORLD"),std::string("Hello World"));
+    EXPECT_EQ(StringUtils::Capitalize("HELLO WORLD"),std::string("Hello world"));
     EXPECT_EQ(StringUtils::Capitalize("hello world"),std::string("Hello world"));
+    EXPECT_EQ(StringUtils::Capitalize(" "),std::string(" "));
 }
 
 TEST(StringUtilsTest, Upper){
     EXPECT_EQ(StringUtils::Upper("heya"),std::string("HEYA"));
+    EXPECT_EQ(StringUtils::Upper("HeYa"),std::string("HEYA"));
+    EXPECT_EQ(StringUtils::Upper("@12Heya93"),std::string("@12HEYA93"));
+    EXPECT_EQ(StringUtils::Upper("hEYa\n"),std::string("HEYA\n"));
+    EXPECT_EQ(StringUtils::Upper(""),std::string(""));
 }
 
 TEST(StringUtilsTest, Lower){
     EXPECT_EQ(StringUtils::Lower("HEYYA"),std::string("heyya"));
+    EXPECT_EQ(StringUtils::Lower("HeYa"),std::string("heya"));
+    EXPECT_EQ(StringUtils::Lower("@12HeYYa93"),std::string("@12heyya93"));
+    EXPECT_EQ(StringUtils::Lower("hEYa\n"),std::string("heya\n"));
+    EXPECT_EQ(StringUtils::Lower(""),std::string(""));
 }
 
 TEST(StringUtilsTest, LStrip){
     EXPECT_EQ(StringUtils::LStrip("   howdy  "),std::string("howdy  "));
+    EXPECT_EQ(StringUtils::LStrip("Hello "),std::string("Hello "));
+    EXPECT_EQ(StringUtils::LStrip(" Hello"),std::string("Hello"));
+    EXPECT_EQ(StringUtils::LStrip("\n  Howdy "),std::string("Howdy "));
 }
 
 TEST(StringUtilsTest, RStrip){
     EXPECT_EQ(StringUtils::RStrip("   howdy  "),std::string("   howdy"));
+    EXPECT_EQ(StringUtils::RStrip("Hello "),std::string("Hello"));
+    EXPECT_EQ(StringUtils::RStrip("Hello    "),std::string("Hello"));
+    EXPECT_EQ(StringUtils::RStrip("  Howdy\n"),std::string("  Howdy"));
 }
 
 TEST(StringUtilsTest, Strip){
     EXPECT_EQ(StringUtils::Strip("   howdy  "),std::string("howdy"));
+    EXPECT_EQ(StringUtils::Strip("  "),std::string(""));
+    EXPECT_EQ(StringUtils::Strip(""),std::string(""));
+    EXPECT_EQ(StringUtils::Strip("   howdy  "),std::string("howdy"));
+    EXPECT_EQ(StringUtils::Strip("   howdy  "),std::string("howdy"));
+    EXPECT_EQ(StringUtils::Strip("\n Howdy \t"),std::string("Howdy"));
+    EXPECT_EQ(StringUtils::Strip(""),std::string(""));
+    EXPECT_EQ(StringUtils::Strip("\n\t\n "),std::string(""));
 }
 
 TEST(StringUtilsTest, Center){
@@ -38,6 +62,8 @@ TEST(StringUtilsTest, Center){
     EXPECT_EQ(StringUtils::Center("hi",5),std::string(" hi  "));
     EXPECT_EQ(StringUtils::Center("money",7,'$'),std::string("$money$"));
     EXPECT_EQ(StringUtils::Center("over",2,'*'),std::string("over"));
+    EXPECT_EQ(StringUtils::Center("hi",-5),std::string("hi"));
+
 }
 
 TEST(StringUtilsTest, LJust){
@@ -52,15 +78,19 @@ TEST(StringUtilsTest, RJust){
 
 TEST(StringUtilsTest, Replace){
     EXPECT_EQ(StringUtils::Replace("the quick brown fox jumped over the lazy dog","the","no"),std::string("no quick brown fox jumped over no lazy dog"));
+    EXPECT_EQ(StringUtils::Replace("banana","a","e"),std::string("benene"));
+    EXPECT_EQ(StringUtils::Replace("aaaaaa","aa","z"),std::string("zzz"));
+    EXPECT_EQ(StringUtils::Replace("aaaaa","aa","z"),std::string("zza"));
+    EXPECT_EQ(StringUtils::Replace("xyz","","$"),std::string("$x$y$z$"));
 }
 
 TEST(StringUtilsTest, Split){
     EXPECT_EQ(StringUtils::Split("the,quick,brown,fox",","),std::vector<std::string>({"the","quick","brown","fox"}));
-    EXPECT_EQ(StringUtils::Split(" the, quick, brown, fox",",",std:vector<std::string>({" the"," quick"," brown"," fox"})));
+    EXPECT_EQ(StringUtils::Split(" the, quick, brown, fox",","),std::vector<std::string>({" the"," quick"," brown"," fox"}));
 }
 
 TEST(StringUtilsTest, Join){
-    EXPECT_EQ(StringUtils::Join(std::vector<std::string>({"the","quick","brown","fox"})," "),std::string("the quick brown fox"));
+    EXPECT_EQ(StringUtils::Join(" ",std::vector<std::string>({"the","quick","brown","fox"})),std::string("the quick brown fox"));
 }
 
 TEST(StringUtilsTest, ExpandTabs){
@@ -69,5 +99,5 @@ TEST(StringUtilsTest, ExpandTabs){
 }
 
 TEST(StringUtilsTest, EditDistance){
-    EXPECT_EQ(StringUtils::EditDistance("the","quick","brown","fox"),4);
+    EXPECT_EQ(StringUtils::EditDistance("the","quick"),4);
 }
