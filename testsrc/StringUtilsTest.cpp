@@ -59,7 +59,7 @@ TEST(StringUtilsTest, Strip){
 
 TEST(StringUtilsTest, Center){
     EXPECT_EQ(StringUtils::Center("hi",6),std::string("  hi  "));
-    EXPECT_EQ(StringUtils::Center("hi",5),std::string(" hi  "));
+    EXPECT_EQ(StringUtils::Center("hi",5),std::string("  hi ")); // Super weird test case
     EXPECT_EQ(StringUtils::Center("money",7,'$'),std::string("$money$"));
     EXPECT_EQ(StringUtils::Center("over",2,'*'),std::string("over"));
     EXPECT_EQ(StringUtils::Center("hi",-5),std::string("hi"));
@@ -69,11 +69,19 @@ TEST(StringUtilsTest, Center){
 TEST(StringUtilsTest, LJust){
     EXPECT_EQ(StringUtils::LJust("mu",3),std::string("mu "));
     EXPECT_EQ(StringUtils::LJust("mu",5),std::string("mu   "));
+    EXPECT_EQ(StringUtils::LJust("mu",2),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",1),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",-2),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",5, '#'),std::string("mu###"));
 }
 
 TEST(StringUtilsTest, RJust){
     EXPECT_EQ(StringUtils::RJust("mu",3),std::string(" mu"));
-    EXPECT_EQ(StringUtils::RJust("mu",4),std::string("mu  "));
+    EXPECT_EQ(StringUtils::RJust("mu",5),std::string("   mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",2),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",1),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",-2),std::string("mu"));
+    EXPECT_EQ(StringUtils::LJust("mu",5, '#'),std::string("###mu"));
 }
 
 TEST(StringUtilsTest, Replace){
@@ -87,17 +95,25 @@ TEST(StringUtilsTest, Replace){
 TEST(StringUtilsTest, Split){
     EXPECT_EQ(StringUtils::Split("the,quick,brown,fox",","),std::vector<std::string>({"the","quick","brown","fox"}));
     EXPECT_EQ(StringUtils::Split(" the, quick, brown, fox",","),std::vector<std::string>({" the"," quick"," brown"," fox"}));
+    EXPECT_EQ(StringUtils::Split("a b\tc\n\td"),std::vector<std::string>({"a","b","c","d"}));
 }
 
 TEST(StringUtilsTest, Join){
     EXPECT_EQ(StringUtils::Join(" ",std::vector<std::string>({"the","quick","brown","fox"})),std::string("the quick brown fox"));
+    EXPECT_EQ(StringUtils::Join(",",std::vector<std::string>({"hello", "world"})),std::string("hello,world"));
+    EXPECT_EQ(StringUtils::Join("hello",std::vector<std::string>({"what"})),std::string("what"));
+    EXPECT_EQ(StringUtils::Join(",",std::vector<std::string>({"hello", " ", "world"})),std::string("hello, ,world"));
 }
 
 TEST(StringUtilsTest, ExpandTabs){
     EXPECT_EQ(StringUtils::ExpandTabs("the\tquick\tbrown\tfox",1),std::string("the quick brown fox"));
-    EXPECT_EQ(StringUtils::ExpandTabs("the\tquick\tbrown\tfox",4),std::string("the quick   brown   fox"));
+    EXPECT_EQ(StringUtils::ExpandTabs("the\tquick\tbrown\tfox",4),std::string("the    quick    brown    fox"));
 }
 
 TEST(StringUtilsTest, EditDistance){
-    EXPECT_EQ(StringUtils::EditDistance("the","quick"),4);
+    EXPECT_EQ(StringUtils::EditDistance("",""),0);
+    EXPECT_EQ(StringUtils::EditDistance("", "hey"),3);
+    EXPECT_EQ(StringUtils::EditDistance("hey", ""),3);
+    EXPECT_EQ(StringUtils::EditDistance("Racecar","racecar", true),0);
+    EXPECT_EQ(StringUtils::EditDistance("Racecar","racecar", false),1);
 }

@@ -89,16 +89,12 @@ std::string Center(const std::string &str, int width, char fill) noexcept{
     std::string initial;
     size_t len = temp.length();
     std::string filling;
-    if(fill == '\0'){
-        filling = ' ';
-    }else{
-        filling = fill;
-    }
-    if(len >= width){
+    filling = fill;
+    if(len >= width || width < 0){
         return temp;
     }
     size_t remaining = width - len;
-    size_t left = remaining / 2;
+    size_t left = remaining - (remaining / 2);
     size_t right = remaining - left;
     for(size_t i = 0; i < left; i++){
         initial += filling;
@@ -114,16 +110,12 @@ std::string LJust(const std::string &str, int width, char fill) noexcept{
     std::string temp = str;
     std::string initial;
     size_t len = temp.length();
-    if(width < len){
+    if(width < 0 || width < len){
         return temp;
     }
     size_t remaining = width - len;
     std::string filling;
-    if(fill == '\0'){
-        filling = ' ';
-    }else{
-        filling = fill;
-    }
+    filling = fill;
     initial += temp;
     for(size_t i = 0; i < remaining; i++){
         initial += filling;
@@ -135,16 +127,12 @@ std::string RJust(const std::string &str, int width, char fill) noexcept{
     std::string temp = str;
     std::string initial;
     size_t len = temp.length();
-    if(width < len){
+    if(width < 0 || width < len){
         return temp;
     }
     size_t remaining = width - len;
     std::string filling;
-    if(fill == '\0'){
-        filling = ' ';
-    }else{
-        filling = fill;
-    }
+    filling = fill;
     for(size_t i = 0; i < remaining; i++){
         initial += filling;
     }
@@ -163,7 +151,7 @@ std::string Replace(const std::string &str, const std::string &old, const std::s
         }
         result += rep;
     }else{
-        for(size_t i = 0; i < temp.length()-oldlen; i++){
+        for(size_t i = 0; i < temp.length(); i++){
             if(temp.substr(i, oldlen) == old){
                 result += rep;
                 i += oldlen-1;
@@ -176,22 +164,77 @@ std::string Replace(const std::string &str, const std::string &old, const std::s
 }
 
 std::vector< std::string > Split(const std::string &str, const std::string &splt) noexcept{
-    // Replace code here
-    return {};
+    std::string temp = str;
+    std::vector<std::string> result;
+    size_t splitlength = splt.length();
+    if(splt == ""){
+        for(size_t i = 0; i < temp.length(); i++){
+            if(isspace(temp[i])){
+                continue;
+            }else{
+                result.push_back(std::string(1, temp[i]));
+            }
+        }
+        return result;
+    }
+    if(splitlength >= temp.length()){
+        result.push_back(temp);
+        return result;
+    }
+    size_t last = 0;
+    for(size_t i = 0; i + splitlength <= temp.length(); i++){
+        if(temp.substr(i, splitlength) == splt){
+            result.push_back(temp.substr(last, i - last));
+            last = i + splitlength;
+            i += splitlength - 1;
+        }
+    }
+    result.push_back(temp.substr(last));
+    return result;
 }
 
 std::string Join(const std::string &str, const std::vector< std::string > &vect) noexcept{
-    // Replace code here
-    return "";
+    std::vector<std::string> temp = vect;
+    std::string result;
+    if(temp.empty()){
+        return "";
+    }
+    if(temp.size() == 1){
+        result += temp[0];
+        return result;
+    }
+    for(size_t i = 0; i < temp.size() - 1; i++){
+        result += temp[i];
+        result += str;
+    }
+    result += temp[temp.size() - 1];
+    return result; // easy
 }
 
 std::string ExpandTabs(const std::string &str, int tabsize) noexcept{
-    // Replace code here
-    return "";
+    std::string temp = str;
+    std::string result;
+    std::string tab;
+    if(tabsize <= 0){
+        tab = "";
+    }else{
+        for(size_t i = 0; i < tabsize; i++){
+            tab += " ";
+        }
+    }
+    for(size_t i = 0; i < temp.length(); i++){
+        if(temp.substr(i, 1) == "\t"){
+            result += tab;
+        }else{
+            result += temp.substr(i, 1);
+        }
+    }
+    return result;
 }
 
 int EditDistance(const std::string &left, const std::string &right, bool ignorecase) noexcept{
-    // Replace code here
+    // Map implementation?
+    
     return 0;
 }
 
