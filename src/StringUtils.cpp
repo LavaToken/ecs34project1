@@ -176,21 +176,19 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
                 result.push_back(std::string(1, temp[i]));
             }
         }
-        return result;
-    }
-    if(splitlength >= temp.length()){
+    }else if(splitlength >= temp.length()){
         result.push_back(temp);
-        return result;
-    }
-    size_t last = 0;
-    for(size_t i = 0; i + splitlength <= temp.length(); i++){
-        if(temp.substr(i, splitlength) == splt){
-            result.push_back(temp.substr(last, i - last));
-            last = i + splitlength;
-            i += splitlength - 1;
+    }else{
+        size_t last = 0;
+        for(size_t i = 0; i + splitlength <= temp.length(); i++){
+            if(temp.substr(i, splitlength) == splt){
+                result.push_back(temp.substr(last, i - last));
+                last = i + splitlength;
+                i += splitlength - 1;
+            }
         }
+        result.push_back(temp.substr(last));
     }
-    result.push_back(temp.substr(last));
     return result;
 }
 
@@ -202,13 +200,13 @@ std::string Join(const std::string &str, const std::vector< std::string > &vect)
     }
     if(temp.size() == 1){
         result += temp[0];
-        return result;
+    }else{
+        for(size_t i = 0; i < temp.size() - 1; i++){
+            result += temp[i];
+            result += str;
+        }
+        result += temp[temp.size() - 1];
     }
-    for(size_t i = 0; i < temp.size() - 1; i++){
-        result += temp[i];
-        result += str;
-    }
-    result += temp[temp.size() - 1];
     return result; // easy
 }
 
@@ -276,7 +274,6 @@ int EditDistance(const std::string &left, const std::string &right, bool ignorec
         }
     }
     return dyna[x-1][y-1];
-    return 0;
 }
 
 };
