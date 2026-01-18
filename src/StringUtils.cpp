@@ -1,5 +1,6 @@
 #include "StringUtils.h"
 #include <cctype>
+#include <algorithm>
 
 namespace StringUtils{
 
@@ -234,7 +235,47 @@ std::string ExpandTabs(const std::string &str, int tabsize) noexcept{
 
 int EditDistance(const std::string &left, const std::string &right, bool ignorecase) noexcept{
     // Map implementation?
-    
+    // Heavy influence on Wikipedia pseudocode provided by Instructor
+    size_t x = left.length();
+    size_t y = right.length();
+    std::vector<std::vector<size_t>> dyna(x + 1, std::vector<size_t>(y + 1, 0)); // This is so much easier in java :')
+    size_t cost;
+    for(size_t i = 0; i < x; i++){
+        dyna[i][0] = i;
+    }
+    for(size_t j = 0; j < y; j++){
+        dyna[0][j] = j;
+    }
+    if(!ignorecase){
+        for(size_t j = 1; j < y; j++){
+            for(size_t i = 1; i < x; i++){
+                if(left[i-1] == right[j-1]){
+                    cost = 0;
+                }else{
+                    cost = 1;
+                }
+                dyna[i][j] = std::min<size_t>({dyna[i-1][j] + 1, //Delete
+                                    dyna[i][j-1] + 1,      //Insert
+                                    dyna[i-1][j-1] + cost  //Sub
+                                    });
+            }
+        }
+    }else{
+        for(size_t j = 1; j < y; j++){
+            for(size_t i = 1; i < x; i++){
+                if(tolower(left[i-1]) == tolower(right[j-1])){
+                    cost = 0;
+                }else{
+                    cost = 1;
+                }
+                dyna[i][j] = std::min<size_t>({dyna[i-1][j] + 1, //Delete
+                                    dyna[i][j-1] + 1,      //Insert
+                                    dyna[i-1][j-1] + cost  //Sub
+                                    });
+            }
+        }
+    }
+    return dyna[x-1][y-1];
     return 0;
 }
 

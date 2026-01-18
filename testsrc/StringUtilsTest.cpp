@@ -72,16 +72,16 @@ TEST(StringUtilsTest, LJust){
     EXPECT_EQ(StringUtils::LJust("mu",2),std::string("mu"));
     EXPECT_EQ(StringUtils::LJust("mu",1),std::string("mu"));
     EXPECT_EQ(StringUtils::LJust("mu",-2),std::string("mu"));
-    EXPECT_EQ(StringUtils::LJust("mu",5, '#'),std::string("mu###"));
+    EXPECT_EQ(StringUtils::LJust("mu",5,'#'),std::string("mu###"));
 }
 
 TEST(StringUtilsTest, RJust){
     EXPECT_EQ(StringUtils::RJust("mu",3),std::string(" mu"));
     EXPECT_EQ(StringUtils::RJust("mu",5),std::string("   mu"));
-    EXPECT_EQ(StringUtils::LJust("mu",2),std::string("mu"));
-    EXPECT_EQ(StringUtils::LJust("mu",1),std::string("mu"));
-    EXPECT_EQ(StringUtils::LJust("mu",-2),std::string("mu"));
-    EXPECT_EQ(StringUtils::LJust("mu",5, '#'),std::string("###mu"));
+    EXPECT_EQ(StringUtils::RJust("mu",2),std::string("mu"));
+    EXPECT_EQ(StringUtils::RJust("mu",1),std::string("mu"));
+    EXPECT_EQ(StringUtils::RJust("mu",-2),std::string("mu"));
+    EXPECT_EQ(StringUtils::RJust("mu",5,'#'),std::string("###mu"));
 }
 
 TEST(StringUtilsTest, Replace){
@@ -116,4 +116,5 @@ TEST(StringUtilsTest, EditDistance){
     EXPECT_EQ(StringUtils::EditDistance("hey", ""),3);
     EXPECT_EQ(StringUtils::EditDistance("Racecar","racecar", true),0);
     EXPECT_EQ(StringUtils::EditDistance("Racecar","racecar", false),1);
+    EXPECT_EQ(StringUtils::EditDistance("kitten","sitting"),3);
 }
