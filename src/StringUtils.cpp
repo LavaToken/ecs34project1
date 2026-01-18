@@ -233,7 +233,7 @@ std::string ExpandTabs(const std::string &str, int tabsize) noexcept{
 
 int EditDistance(const std::string &left, const std::string &right, bool ignorecase) noexcept{
     // Map implementation?
-    // Heavy influence on Wikipedia pseudocode provided by Instructor
+    // Influence on Wikipedia pseudocode provided by Instructor
     size_t x = left.length();
     size_t y = right.length();
     std::vector<std::vector<size_t>> dyna(x + 1, std::vector<size_t>(y + 1, 0)); // This is so much easier in java :')
